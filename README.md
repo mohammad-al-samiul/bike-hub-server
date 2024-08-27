@@ -1,4 +1,4 @@
-# 🏍 Bike Rental Reservation Api Backend
+# 🏍 Bike Rental Api Backend
 
 Welcome to the backend of the Bike Rental Api System! This project offers an efficient bike rental service designed for both tourists and locals in Cox's Bazar, known for the picturesque Inani beach. Users can rent bikes online effortlessly, making it easy to explore the town.
 
@@ -49,7 +49,7 @@ Welcome to the backend of the Bike Rental Api System! This project offers an eff
 2. Navigate to the project directory:
 
    ```bash
-   cd TypeScript-Express-App-with-MongoDB-and-Zod-Validation
+   cd bike-rental-api-with-typescript-mongoose-express
    ```
 
 3. Install the dependencies:
