@@ -3,6 +3,7 @@ export type TBike = {
   description: string;
   pricePerHour: number;
   isAvailable?: boolean;
+  bikeImage?: string;
   cc: number;
   year: number;
   model: string;

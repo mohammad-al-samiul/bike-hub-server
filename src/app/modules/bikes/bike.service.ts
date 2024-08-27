@@ -1,7 +1,14 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { sendImageToCloudinary } from "../../utils/sendImageToCloudinary";
 import { TBike } from "./bike.interface";
 import { Bike } from "./bike.model";
 
-const createBikeIntoDB = async (payload: TBike) => {
+const createBikeIntoDB = async (file: any, payload: TBike) => {
+  const bikeName = `${payload.name}-${payload.year}`;
+  const { secure_url } = await sendImageToCloudinary(bikeName, file?.path);
+  //console.log(secure_url);
+  payload.bikeImage = secure_url;
+
   const result = await Bike.create(payload);
   return result;
 };

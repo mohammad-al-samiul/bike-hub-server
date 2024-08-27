@@ -13,6 +13,9 @@ const bikeSchema = new Schema<TBike>(
       type: String,
       required: true,
     },
+    bikeImage: {
+      type: String,
+    },
     pricePerHour: {
       type: Number,
       required: true,

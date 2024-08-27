@@ -5,7 +5,10 @@ import { BikeServices } from "./bike.service";
 
 const createBike = catchAsync(async (req, res) => {
   const bikeInfo = req.body;
-  const result = await BikeServices.createBikeIntoDB(bikeInfo);
+  // console.log("bikeInfo", bikeInfo);
+  // console.log("file", req.file);
+
+  const result = await BikeServices.createBikeIntoDB(req.file, bikeInfo);
 
   sendResponse(res, {
     success: true,
