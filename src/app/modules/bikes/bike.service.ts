@@ -17,6 +17,12 @@ const getAllBikeFromDB = async () => {
   const result = await Bike.find().select("-createdAt -updatedAt -__v");
   return result;
 };
+const getSingleBikeFromDB = async (id: string) => {
+  const result = await Bike.findOne({ _id: id }).select(
+    "-createdAt -updatedAt -__v"
+  );
+  return result;
+};
 
 const updateBikeFromDB = async (payload: Partial<TBike>, id: string) => {
   const result = await Bike.findOneAndUpdate({ _id: id }, payload, {
@@ -36,6 +42,7 @@ const deleteBikeFromDB = async (id: string) => {
 export const BikeServices = {
   createBikeIntoDB,
   getAllBikeFromDB,
+  getSingleBikeFromDB,
   updateBikeFromDB,
   deleteBikeFromDB,
 };

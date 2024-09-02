@@ -6,8 +6,8 @@ export type TUser = {
   password: string;
   phone?: number; //optional phone number
   address?: string; //optional address
-  role: "admin" | "user";
-  isDeleted: boolean;
+  role?: "admin" | "user";
+  isDeleted?: boolean;
 };
 
 export type TLoginUser = {

@@ -5,6 +5,7 @@ import { BikeServices } from "./bike.service";
 
 const createBike = catchAsync(async (req, res) => {
   const bikeInfo = req.body;
+
   // console.log("bikeInfo", bikeInfo);
   // console.log("file", req.file);
 
@@ -20,6 +21,17 @@ const createBike = catchAsync(async (req, res) => {
 
 const getAllBike = catchAsync(async (req, res) => {
   const result = await BikeServices.getAllBikeFromDB();
+
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: "Bikes retrieved successfully",
+    data: result,
+  });
+});
+
+const getSingleBike = catchAsync(async (req, res) => {
+  const result = await BikeServices.getSingleBikeFromDB(req.params.id);
 
   sendResponse(res, {
     success: true,
@@ -57,6 +69,7 @@ const deleteBike = catchAsync(async (req, res) => {
 export const BikeController = {
   createBike,
   getAllBike,
+  getSingleBike,
   updateBike,
   deleteBike,
 };

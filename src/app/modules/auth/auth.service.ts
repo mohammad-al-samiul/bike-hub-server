@@ -9,7 +9,30 @@ import jwt, { JwtPayload } from "jsonwebtoken";
 
 const createUserIntoDB = async (payload: TUser) => {
   const result = await User.create(payload);
-  return result;
+
+  //generate access token
+  const jwtPayload = {
+    email: result?.email,
+    role: result?.role,
+  };
+
+  const accessToken = createToken(
+    jwtPayload,
+    config.jwt_access_secret as string,
+    config.jwt_access_expires_in as string
+  );
+
+  const refreshToken = createToken(
+    jwtPayload,
+    config.jwt_refresh_secret as string,
+    config.jwt_refresh_expires_in as string
+  );
+
+  return {
+    accessToken,
+    refreshToken,
+    result,
+  };
 };
 
 const loginUserFromDB = async (payload: TLoginUser) => {

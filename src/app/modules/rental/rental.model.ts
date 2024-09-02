@@ -7,8 +7,8 @@ import { User } from "../auth/auth.model";
 import { model } from "mongoose";
 
 const rentalSchema = new Schema<TRental>({
-  userId: {
-    type: Schema.Types.ObjectId,
+  userEmail: {
+    type: String,
   },
   bikeId: {
     type: Schema.Types.ObjectId,
@@ -46,7 +46,7 @@ rentalSchema.pre("save", async function (next) {
     );
   }
 
-  const isUserExist = await User.findOne({ _id: this?.userId });
+  const isUserExist = await User.findOne({ email: this?.userEmail });
   if (!isUserExist) {
     throw new AppError(httpStatus.NOT_FOUND, "User is not found!");
   }
