@@ -1,51 +1,49 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import Stripe from "stripe";
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string);
-const MY_DOMAIN = "http://localhost:5173"; // Updated domain
-const createCheckoutSession = async (
-  priceId: string
-): Promise<Stripe.Checkout.Session> => {
-  try {
-    // Create a new checkout session
-    const session = await stripe.checkout.sessions.create({
-      ui_mode: "embedded",
-      line_items: [
-        {
-          price: priceId,
-          quantity: 1,
-        },
-      ],
-      mode: "payment",
-      return_url: `${MY_DOMAIN}/return?session_id={CHECKOUT_SESSION_ID}`, // Updated URL
-    });
+import { Bike } from "../bikes/bike.model";
+import { Rental } from "../rental/rental.model";
+import { verifyPayment } from "./payment.utils";
 
-    // Return the session object
-    return session;
-  } catch (error: any) {
-    // Handle and throw an error if the session creation fails
-    throw new Error(`Failed to create checkout session: ${error.message}`);
+const confirmationServiceIntoDB = async (
+  transactionId: string,
+  status: string
+) => {
+  const verifyResponse = await verifyPayment(transactionId);
+
+  if (verifyResponse && verifyResponse.pay_status === "Successful") {
+    const rental = await Rental.findOne({ transactionId });
+
+    // If rental is found, update its payment status and bike availability
+    if (rental) {
+      await Rental.findOneAndUpdate(
+        { transactionId },
+        { paymentStatus: "Paid" }
+      );
+
+      // Find the bike associated with the rental
+      const bike = await Bike.findOne({ _id: rental.bikeId });
+
+      if (bike) {
+        // Update bike availability to 'available'
+        await Bike.findOneAndUpdate(
+          { _id: rental.bikeId },
+          { isAvailable: false }
+        );
+      }
+    }
   }
-};
 
-const getSessionStatus = async (
-  sessionId: string
-): Promise<{ status: string; customer_email: string | null }> => {
-  try {
-    // Retrieve the session details
-    const session = await stripe.checkout.sessions.retrieve(sessionId);
-
-    // Return the session status and customer email
-    return {
-      status: session.status as string,
-      customer_email: session.customer_details?.email || null,
-    };
-  } catch (error: any) {
-    // Handle and throw an error if the session retrieval fails
-    throw new Error(`Failed to retrieve session: ${error.message}`);
+  if (status === "success") {
+    return `<div>
+     payment success
+     </div>`;
+  } else if (status === "failed") {
+    return `
+     <div>
+     payment failed
+     </div>
+    `;
   }
 };
 
 export const paymentServices = {
-  createCheckoutSession,
-  getSessionStatus,
+  confirmationServiceIntoDB,
 };

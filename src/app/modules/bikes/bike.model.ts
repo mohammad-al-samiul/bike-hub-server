@@ -58,6 +58,7 @@ bikeSchema.pre("save", async function (next) {
 
 bikeSchema.pre("findOneAndUpdate", async function (next) {
   const query = this?.getQuery();
+
   const isBikeExist = await Bike.findOne(query);
   if (!isBikeExist) {
     throw new AppError(httpStatus.NOT_FOUND, "Bike not found!");

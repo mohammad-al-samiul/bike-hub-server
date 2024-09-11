@@ -10,13 +10,13 @@ import handleDuplicateError from "../errors/handleDuplicateError";
 import AppError from "../errors/AppError";
 
 const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
+  //setting default values
   let statusCode = 500;
   let message = "Something went wrong!";
-
   let errorSources: TErrorSources = [
     {
       path: "",
-      message: "Something went wrong!",
+      message: "Something went wrong",
     },
   ];
 
@@ -42,7 +42,7 @@ const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
     errorSources = simplifiedError?.errorSources;
   } else if (err instanceof AppError) {
     statusCode = err?.statusCode;
-    message = err?.message;
+    message = err.message;
     errorSources = [
       {
         path: "",
@@ -50,7 +50,7 @@ const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
       },
     ];
   } else if (err instanceof Error) {
-    message = err?.message;
+    message = err.message;
     errorSources = [
       {
         path: "",
@@ -59,7 +59,8 @@ const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
     ];
   }
 
-  res.status(statusCode).json({
+  //ultimate return
+  return res.status(statusCode).json({
     success: false,
     message,
     errorSources,

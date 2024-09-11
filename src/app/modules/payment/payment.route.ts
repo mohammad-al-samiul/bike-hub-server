@@ -1,11 +1,7 @@
 import express from "express";
 import { paymentControllers } from "./payment.controller";
-const paymentRouter = express.Router();
+const router = express.Router();
 
-paymentRouter.post(
-  "create-checkout-session",
-  paymentControllers.createCheckoutSession
-);
-paymentRouter.get("session-status", paymentControllers.getSessionStatus);
+router.post("/confirmation", paymentControllers.confirmationController);
 
-export default paymentRouter;
+export const paymentRouter = router;

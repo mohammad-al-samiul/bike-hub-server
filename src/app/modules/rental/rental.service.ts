@@ -6,34 +6,45 @@ import AppError from "../../errors/AppError";
 import httpStatus from "http-status";
 import { Rental } from "./rental.model";
 import { Bike } from "../bikes/bike.model";
+import { initiatePayment } from "../payment/payment.utils";
+import { v4 as uuidv4 } from "uuid";
+
+function generateTransactionId() {
+  return `TXN-${uuidv4()}`; // Generates a random UUID prefixed with TXN-
+}
 
 const createRentalIntoDB = async (payload: TRental, decodInfo: JwtPayload) => {
   const { email, role } = decodInfo;
+
   const session = await mongoose.startSession();
   try {
     session.startTransaction();
 
     const user = await User.findOne({ email, role });
+
     if (!user) {
       throw new AppError(httpStatus.UNAUTHORIZED, "User is not authorized");
     }
+    const transactionId = generateTransactionId();
+    payload.transactionId = transactionId;
+    await Rental.create([payload], { session }); // Return array
 
-    const userEmail = user.email as string;
-    payload.userEmail = userEmail;
+    const paymentData = {
+      transactionId,
+      amount: payload.totalCost,
+      customerEmail: user?.email,
+      customerName: user?.name,
+      customerPhone: user?.phone,
+      customerAddress: user?.address,
+    };
 
-    const result = await Rental.create([payload], { session }); //return array
-
-    await Bike.findOneAndUpdate(
-      { _id: payload.bikeId },
-      { isAvailable: false },
-      { session }
-    );
+    const paymentSession = await initiatePayment(paymentData);
 
     await session.commitTransaction();
-    return result;
+
+    return paymentSession;
   } catch (error) {
     await session.abortTransaction();
-    session.endSession();
   } finally {
     session.endSession();
   }

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Schema } from "mongoose";
 import { TRental } from "./rental.interface";
 import { Bike } from "../bikes/bike.model";
@@ -26,6 +27,15 @@ const rentalSchema = new Schema<TRental>({
     type: Number,
     default: 0,
   },
+  paymentStatus: {
+    type: String,
+    enum: ["Pending", "Paid", "Failed"],
+  },
+
+  transactionId: {
+    type: String,
+  },
+
   isReturned: {
     type: Boolean,
     default: false,
@@ -33,24 +43,29 @@ const rentalSchema = new Schema<TRental>({
 });
 
 rentalSchema.pre("save", async function (next) {
-  const isBikeExist = await Bike.findOne({ _id: this?.bikeId });
+  try {
+    const isBikeExist = await Bike.findOne({ _id: this?.bikeId });
 
-  if (!isBikeExist) {
-    throw new AppError(httpStatus.NOT_FOUND, "Bike not found!");
-  }
+    if (!isBikeExist) {
+      throw new AppError(httpStatus.NOT_FOUND, "Bike not found!");
+    }
 
-  if (!isBikeExist.isAvailable) {
-    throw new AppError(
-      httpStatus.SERVICE_UNAVAILABLE,
-      "Bike is not available!"
-    );
-  }
+    if (!isBikeExist.isAvailable) {
+      throw new AppError(
+        httpStatus.SERVICE_UNAVAILABLE,
+        "Bike is not available!"
+      );
+    }
 
-  const isUserExist = await User.findOne({ email: this?.userEmail });
-  if (!isUserExist) {
-    throw new AppError(httpStatus.NOT_FOUND, "User is not found!");
+    const isUserExist = await User.findOne({ email: this?.userEmail });
+    if (!isUserExist) {
+      throw new AppError(httpStatus.NOT_FOUND, "User is not found!");
+    }
+
+    next(); // Call next to proceed
+  } catch (error: any) {
+    next(error); // Pass error to next middleware
   }
-  next();
 });
 
 export const Rental = model<TRental>("Rental", rentalSchema);

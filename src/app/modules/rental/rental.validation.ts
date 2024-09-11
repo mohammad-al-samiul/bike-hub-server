@@ -2,7 +2,7 @@ import { z } from "zod";
 
 const rentalValidationSchema = z.object({
   body: z.object({
-    userEmail: z.string().optional(),
+    userEmail: z.string().email().optional(),
     bikeId: z.string({
       required_error: "bikeId is required!",
     }),

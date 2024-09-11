@@ -17,8 +17,8 @@ const createRental = catchAsync(async (req, res) => {
 
   sendResponse(res, {
     success: true,
-    statusCode: httpStatus.OK,
-    message: "Rental created successfully!",
+    statusCode: httpStatus.CREATED,
+    message: "Bike rent successfully!",
     data: result,
   });
 });
