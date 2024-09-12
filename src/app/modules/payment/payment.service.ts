@@ -105,6 +105,9 @@ const confirmationServiceIntoDB = async (
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" />
     <title>Payment Confirmation</title>
     <style>
+    ._failed{ border-bottom: solid 4px red !important; }
+    ._failed i{  color:red !important;  }
+
       ._success {
         box-shadow: 0 15px 25px #00000019;
         padding: 45px;
