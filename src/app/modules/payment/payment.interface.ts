@@ -1,14 +1,15 @@
 export type TPaymentProps = {
+  clientName: string | undefined;
+  address: string | null | undefined;
+  clientPhoneNo: number | null | undefined;
   transactionId: string;
-  clientName?: string;
-  clientEmail?: string;
+  clientEmail: string | undefined;
   bikeName: string;
   bikeId: string;
   totalCost: number;
   startTime: string;
   returnTime: string;
-  address?: string;
-  clientPhoneNo?: number;
+
   _id?: string;
 };
 

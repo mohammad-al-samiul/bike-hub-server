@@ -18,7 +18,7 @@ app.use(
 app.use(cookieParser());
 
 app.use("/api", router);
-app.use("/api/payment", paymentRouter);
+app.use("/api", paymentRouter);
 
 app.get("/", (req: Request, res: Response) => {
   res.send("Hello World!");
@@ -26,5 +26,6 @@ app.get("/", (req: Request, res: Response) => {
 
 app.use(globalErrorHandler);
 app.use(notFound);
+// app.options("*", cors());
 
 export default app;

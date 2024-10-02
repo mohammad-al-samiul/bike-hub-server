@@ -82,7 +82,7 @@ const returnBikeIntoDB = async (id: string, endTime: string) => {
     const updateDoc = {
       isReturned: true,
       returnTime: formattedReturnTime,
-      totalCost: totalCost.toFixed(2),
+      totalCost: Math.round(totalCost),
     };
     //  console.log("updateDoc", updateDoc);
     const result = await Rental.findOneAndUpdate({ _id: id }, updateDoc, {

@@ -33,8 +33,15 @@ const getAllPayment = catchAsync(async (req, res) => {
   });
 });
 
+const testPayment = catchAsync(async (req, res) => {
+  const paymentData = req.body;
+  const result = await paymentServices.testPaymentIntoDb(paymentData);
+  res.send(result);
+});
+
 export const paymentControllers = {
   confirmationController,
   createPayment,
   getAllPayment,
+  testPayment,
 };
