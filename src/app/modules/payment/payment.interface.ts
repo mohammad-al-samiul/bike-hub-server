@@ -15,4 +15,6 @@ export type TPaymentProps = {
 
 export type TPaymentInfo = {
   transactionId: string;
+  clientEmail: string;
+  bikeId: string;
 };

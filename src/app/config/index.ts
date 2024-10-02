@@ -21,4 +21,5 @@ export default {
   payment_verify_url: process.env.PAYMENT_VERIFY_URL,
   secret_key: process.env.SK,
   backend_url: process.env.BACKEND_URL,
+  frontend_url: process.env.FRONTEND_URL,
 };

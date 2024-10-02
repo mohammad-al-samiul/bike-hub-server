@@ -8,6 +8,14 @@ const paymentSchema = new Schema<TPaymentInfo>(
       type: String,
       required: true,
     },
+    clientEmail: {
+      type: String,
+      required: true,
+    },
+    bikeId: {
+      type: String,
+      required: true,
+    },
   },
   {
     timestamps: true,

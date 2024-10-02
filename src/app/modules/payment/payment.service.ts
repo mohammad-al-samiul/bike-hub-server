@@ -23,12 +23,22 @@ const confirmationServiceIntoDB = async (
 
     try {
       session.startTransaction();
-      await Rental.findOneAndUpdate(
-        { transactionId },
-        { paymentStatus: "Paid" },
-        { session }
-      );
-      await Payment.create([{ transactionId }], { session });
+      const rental = await Rental.findOne({ transactionId });
+      // console.log("rental", rental);
+      if (rental) {
+        const paymentData = {
+          transactionId,
+          clientEmail: rental?.userEmail,
+          bikeId: rental?.bikeId,
+        };
+        await Rental.findOneAndUpdate(
+          { transactionId },
+          { paymentStatus: "Paid" },
+          { session }
+        );
+
+        await Payment.create([paymentData], { session });
+      }
 
       await session.commitTransaction();
     } catch (error) {
@@ -106,6 +116,7 @@ const getAllPayment = async (token: string) => {
     token,
     config.jwt_access_secret as string
   ) as JwtPayload;
+
   const { email } = decoded;
   const result = await Payment.find({ clientEmail: email });
 

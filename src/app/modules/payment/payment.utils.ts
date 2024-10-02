@@ -10,7 +10,7 @@ export const initiatePayment = async (paymentData: TPaymentProps) => {
       tran_id: paymentData.transactionId,
       success_url: `${config.backend_url}/api/confirmation?transactionId=${paymentData.transactionId}&status=success`,
       fail_url: `${config.backend_url}/api/confirmation?status=failed`,
-      cancel_url: `${config.backend_url}/user/my-rentals`,
+      cancel_url: `${config.frontend_url}/user/my-rentals`,
       amount: paymentData.totalCost,
       currency: "BDT",
       desc: "Merchant Registration Payment",
