@@ -36,4 +36,8 @@ userRouter.put(
   UserControllers.updateProfile
 );
 
+userRouter.delete("/:id", auth(USER_ROLE.admin), UserControllers.deleteUser);
+
+userRouter.put("/:id", auth(USER_ROLE.admin), UserControllers.updateUserRole);
+
 export const userRoutes = { authRouter, userRouter };

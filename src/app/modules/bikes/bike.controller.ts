@@ -5,10 +5,6 @@ import { BikeServices } from "./bike.service";
 
 const createBike = catchAsync(async (req, res) => {
   const bikeInfo = req.body;
-
-  // console.log("bikeInfo", bikeInfo);
-  // console.log("file", req.file);
-
   const result = await BikeServices.createBikeIntoDB(req.file, bikeInfo);
 
   sendResponse(res, {
@@ -45,7 +41,7 @@ const updateBike = catchAsync(async (req, res) => {
   const updateDoc = req.body;
   const id = req.params.id;
 
-  const result = await BikeServices.updateBikeFromDB(updateDoc, id);
+  const result = await BikeServices.updateBikeFromDB(req.file, updateDoc, id);
   sendResponse(res, {
     success: true,
     statusCode: httpStatus.OK,

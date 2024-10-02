@@ -25,6 +25,11 @@ bikeRouter.get("/:id", BikeController.getSingleBike);
 
 bikeRouter.put(
   "/:id",
+  upload.single("file"),
+  (req: Request, res: Response, next: NextFunction) => {
+    req.body = JSON.parse(req.body.data);
+    next();
+  },
   validateRequest(bikeValidation.updateBikeValidationSchema),
   auth(USER_ROLE.admin),
   BikeController.updateBike

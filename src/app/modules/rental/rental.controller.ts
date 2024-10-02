@@ -8,6 +8,7 @@ import httpStatus from "http-status";
 const createRental = catchAsync(async (req, res) => {
   const token = req.headers.authorization as string;
   const rentalInfo = req.body;
+
   const decoded = jwt.verify(
     token,
     config.jwt_access_secret as string
@@ -25,7 +26,9 @@ const createRental = catchAsync(async (req, res) => {
 
 const returnBike = catchAsync(async (req, res) => {
   const id = req.params.id;
-  const result = await RentalServices.returnBikeIntoDB(id);
+  const { endTime } = req.body;
+
+  const result = await RentalServices.returnBikeIntoDB(id, endTime);
 
   sendResponse(res, {
     success: true,
@@ -43,6 +46,7 @@ const getRentals = catchAsync(async (req, res) => {
   ) as JwtPayload;
 
   const result = await RentalServices.getAllRentalsIntoDB(decoded);
+  //console.log("result", result);
   sendResponse(res, {
     success: true,
     statusCode: httpStatus.OK,
@@ -51,8 +55,22 @@ const getRentals = catchAsync(async (req, res) => {
   });
 });
 
+const getSingleRent = catchAsync(async (req, res) => {
+  const id = req.params.id;
+
+  const result = await RentalServices.getSingleRentIntoDB(id);
+  //console.log("result", result);
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: "Rental retrieved successfully!",
+    data: result,
+  });
+});
+
 export const RentalControllers = {
   createRental,
   returnBike,
   getRentals,
+  getSingleRent,
 };

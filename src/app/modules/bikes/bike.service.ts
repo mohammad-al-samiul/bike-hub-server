@@ -1,5 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { sendImageToCloudinary } from "../../utils/sendImageToCloudinary";
+
 import { TBike } from "./bike.interface";
 import { Bike } from "./bike.model";
 
@@ -24,7 +26,16 @@ const getSingleBikeFromDB = async (id: string) => {
   return result;
 };
 
-const updateBikeFromDB = async (payload: Partial<TBike>, id: string) => {
+const updateBikeFromDB = async (
+  file: any,
+  payload: Partial<TBike>,
+  id: string
+) => {
+  const bikeName = `${payload.name}-${payload.year}`;
+  const { secure_url } = await sendImageToCloudinary(bikeName, file?.path);
+  //console.log(secure_url);
+  payload.bikeImage = secure_url;
+
   const result = await Bike.findOneAndUpdate({ _id: id }, payload, {
     new: true,
   }).select("-createdAt -updatedAt -__v");

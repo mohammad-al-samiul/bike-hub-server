@@ -80,6 +80,26 @@ const updateProfile = catchAsync(async (req, res) => {
   });
 });
 
+const deleteUser = catchAsync(async (req, res) => {
+  const result = await UserServices.deleteUserFromDb(req.params.id);
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: "Users deleted successfully!",
+    data: result,
+  });
+});
+
+const updateUserRole = catchAsync(async (req, res) => {
+  const result = await UserServices.updateUserRole(req.params.id);
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: "Users role updated successfully!",
+    data: result,
+  });
+});
+
 export const UserControllers = {
   createUser,
   loginUser,
@@ -87,4 +107,6 @@ export const UserControllers = {
   getAllUser,
   getProfile,
   updateProfile,
+  deleteUser,
+  updateUserRole,
 };

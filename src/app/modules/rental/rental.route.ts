@@ -20,5 +20,6 @@ rentalRouter.put(
 );
 
 rentalRouter.get("/", RentalControllers.getRentals);
+rentalRouter.get("/:id", RentalControllers.getSingleRent);
 
 export const rentalRoutes = { rentalRouter };

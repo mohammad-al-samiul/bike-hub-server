@@ -14,6 +14,7 @@ const rentalSchema = new Schema<TRental>({
   bikeId: {
     type: Schema.Types.ObjectId,
     required: true,
+    ref: "Bike",
   },
   startTime: {
     type: String,
@@ -30,6 +31,7 @@ const rentalSchema = new Schema<TRental>({
   paymentStatus: {
     type: String,
     enum: ["Pending", "Paid", "Failed"],
+    default: "Pending",
   },
 
   transactionId: {

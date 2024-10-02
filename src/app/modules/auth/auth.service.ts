@@ -113,6 +113,31 @@ const updateProfileFromDB = async (payload: TUpdateUser, token: string) => {
   }).select("-isDeleted -createdAt -updatedAt -__v");
   return result;
 };
+
+const updateUserRole = async (id: string) => {
+  const user = await User.findById(id);
+  if (!user) {
+    throw new AppError(404, "Invalid user id");
+  }
+  let role;
+  if (user?.role === "user") {
+    role = "admin";
+  } else {
+    role = "user";
+  }
+  const result = await User.findByIdAndUpdate(id, { role });
+  return result;
+};
+
+const deleteUserFromDb = async (id: string) => {
+  const user = await User.findById(id);
+  if (!user) {
+    throw new AppError(404, "Invalid user id");
+  }
+  const result = await User.findByIdAndDelete(id);
+  return result;
+};
+
 export const UserServices = {
   createUserIntoDB,
   loginUserFromDB,
@@ -120,4 +145,6 @@ export const UserServices = {
   refreshToken,
   getProfileFromDB,
   updateProfileFromDB,
+  updateUserRole,
+  deleteUserFromDb,
 };
