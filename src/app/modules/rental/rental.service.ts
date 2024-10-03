@@ -76,13 +76,14 @@ const returnBikeIntoDB = async (id: string, endTime: string) => {
     const startTime = new Date(rental?.startTime); // TypeScript already infers this as Date
     const timeDifference = new Date(returnTime).getTime() - startTime.getTime(); // Use .getTime() to get the time in milliseconds
     const totalHours = timeDifference / (1000 * 60 * 60);
-    const totalCost = bike.pricePerHour * totalHours;
+
+    const totalCost = Math.trunc(Math.abs(bike.pricePerHour * totalHours));
 
     const formattedReturnTime = returnTime.toISOString().slice(0, 19) + "Z";
     const updateDoc = {
       isReturned: true,
       returnTime: formattedReturnTime,
-      totalCost: totalCost.toFixed(0),
+      totalCost: totalCost,
     };
     //  console.log("updateDoc", updateDoc);
     const result = await Rental.findOneAndUpdate({ _id: id }, updateDoc, {
