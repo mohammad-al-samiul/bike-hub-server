@@ -7,7 +7,7 @@ import jwt from "jsonwebtoken";
 import { Payment } from "./payment.model";
 import { initiatePayment, verifyPayment } from "./payment.utils";
 import { v4 as uuidv4 } from "uuid";
-import mongoose from "mongoose";
+
 import { startSession } from "mongoose";
 
 const confirmationServiceIntoDB = async (
@@ -17,10 +17,7 @@ const confirmationServiceIntoDB = async (
   const verifyResponse = await verifyPayment(transactionId);
 
   if (verifyResponse && verifyResponse.pay_status === "Successful") {
-    const session = await mongoose.startSession();
-
     try {
-      session.startTransaction();
       const rental = await Rental.findOne({ transactionId });
       // console.log("rental", rental);
       if (rental) {
@@ -31,18 +28,14 @@ const confirmationServiceIntoDB = async (
         };
         await Rental.findOneAndUpdate(
           { transactionId },
-          { paymentStatus: "Paid" },
-          { session }
+          { paymentStatus: "Paid" }
         );
 
-        await Payment.create([paymentData], { session });
+        await Payment.create(paymentData);
       }
-
-      await session.commitTransaction();
-    } catch (error) {
-      await session.abortTransaction();
-    } finally {
-      session.endSession();
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      throw new Error(error);
     }
   }
 

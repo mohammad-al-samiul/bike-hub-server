@@ -1,6 +1,6 @@
-# 🏍 Bike Rental Api Backend
+# 🏍 Bikehub Server Backend
 
-Welcome to the backend of the Bike Rental Api System! This project offers an efficient bike rental service designed for both tourists and locals in Cox's Bazar, known for the picturesque Inani beach. Users can rent bikes online effortlessly, making it easy to explore the town.
+Welcome to the Bikehub Server backend system! This project provides an efficient bike rental service designed for tourists and locals in Cox's Bazar, specifically for exploring the picturesque Inani beach.
 
 ## 🌟 Features
 
@@ -8,13 +8,14 @@ Welcome to the backend of the Bike Rental Api System! This project offers an eff
 - **Easy Bike Browsing and Booking**: Users can conveniently explore and rent bikes.
 - **JWT Authentication**: Provides secure authentication and authorization for user data.
 - **Scalable Architecture**: Built for performance and scalability.
+- **Payment Integration**: Facilitates seamless online payment processing.
 
 ## 🛠️ Technology Stack
 
 - **Programming Language**: TypeScript
 - **Web Framework**: Express.js
 - **Database & Validation**: Mongoose and Zod for MongoDB
-- **Authentication**: JWT (Json Web Token)
+- **Authentication**: JWT (JSON Web Token)
 
 ## 🌐 API Endpoints
 
@@ -37,6 +38,12 @@ Welcome to the backend of the Bike Rental Api System! This project offers an eff
 - **Create Rental**: `/api/rentals` (POST)
 - **Return Bike (Admin Only)**: `/api/rentals/:id/return` (PUT)
 - **Get User Rentals**: `/api/rentals` (GET)
+
+### Payment Routes
+
+- **Create Payment**: `/api/payment/create-payment` (POST)
+- **Payment Confirmation**: `/api/payment/confirmation` (POST)
+- **Get All Payments**: `/api/payment/get-payment` (GET)
 
 ## 🛠️ Installation & Setup
 
