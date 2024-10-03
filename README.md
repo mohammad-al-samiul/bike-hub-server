@@ -50,13 +50,13 @@ Welcome to the Bikehub Server backend system! This project provides an efficient
 1. Clone the repository:
 
    ```bash
-   https://github.com/mohammad-al-samiul/bike-rental-api-with-typescript-mongoose-express.git
+   git clone https://github.com/mohammad-al-samiul/bike-hub-server.git
    ```
 
 2. Navigate to the project directory:
 
    ```bash
-   cd bike-rental-api-with-typescript-mongoose-express
+   cd bikehub-server
    ```
 
 3. Install the dependencies:
