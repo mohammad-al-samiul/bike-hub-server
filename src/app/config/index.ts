@@ -19,7 +19,6 @@ export default {
   amarpay_store_id: process.env.STORE_ID,
   payment_url: process.env.PAYMENT_URL,
   payment_verify_url: process.env.PAYMENT_VERIFY_URL,
-  secret_key: process.env.SK,
   backend_url: process.env.BACKEND_URL,
   frontend_url: process.env.FRONTEND_URL,
 };

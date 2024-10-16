@@ -4,13 +4,13 @@ import { bikeValidation } from "./bike.validation";
 import { BikeController } from "./bike.controller";
 import auth from "../../middleware/auth";
 import { USER_ROLE } from "../auth/auth.constant";
-import { upload } from "../../utils/sendImageToCloudinary";
+import { multerUpload } from "../../config/multer.config";
 
 const bikeRouter = express.Router();
 
 bikeRouter.post(
   "/",
-  upload.single("file"),
+  multerUpload.single("file"),
   (req: Request, res: Response, next: NextFunction) => {
     req.body = JSON.parse(req.body.data);
     next();
@@ -25,7 +25,7 @@ bikeRouter.get("/:id", BikeController.getSingleBike);
 
 bikeRouter.put(
   "/:id",
-  upload.single("file"),
+  multerUpload.single("file"),
   (req: Request, res: Response, next: NextFunction) => {
     req.body = JSON.parse(req.body.data);
     next();
