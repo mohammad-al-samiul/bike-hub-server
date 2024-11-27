@@ -19,11 +19,12 @@ const confirmationServiceIntoDB = async (
   if (verifyResponse && verifyResponse.pay_status === "Successful") {
     try {
       const rental = await Rental.findOne({ transactionId });
-      // console.log("rental", rental);
+
       if (rental) {
         const paymentData = {
           transactionId,
           clientEmail: rental?.userEmail,
+          amount: rental?.totalCost,
           bikeId: rental?.bikeId,
         };
         await Rental.findOneAndUpdate(
@@ -106,6 +107,7 @@ const confirmationServiceIntoDB = async (
           <div class="message-box _success">
             <i class="fa fa-check-circle" aria-hidden="true"></i>
             <h2>Your payment was successful</h2>
+            <a href="/">Home</a>
             <p>
               Thank you for your payment. we will <br />
               be in contact with more details shortly
@@ -208,7 +210,7 @@ const createPaymentIntoDb = async (paymentData: TPaymentProps) => {
     };
 
     // Generate transaction ID
-    const transactionId = `TXN-${uuidv4()}`;
+    const transactionId = `TXN-${uuidv4().split("-")[0]}`;
 
     // Create payment info object
     const paymentInfo = {
@@ -245,46 +247,25 @@ const createPaymentIntoDb = async (paymentData: TPaymentProps) => {
 };
 
 const getAllPayment = async (token: string) => {
+  let result;
   const decoded = jwt.verify(
     token,
     config.jwt_access_secret as string
   ) as JwtPayload;
 
-  const { email } = decoded;
-  const result = await Payment.find({ clientEmail: email });
+  const { email, role } = decoded;
+
+  if (role === "user") {
+    result = await Payment.find({ clientEmail: email }); // Populate bikeId with the corresponding Bike details
+  } else {
+    result = await Payment.find(); // Populate bikeId for all payments
+  }
 
   return result;
-};
-
-const testPaymentIntoDb = async (paymentData: TPaymentProps) => {
-  const user = await User.findOne({
-    email: paymentData?.clientEmail,
-  });
-  const userInfo = {
-    clientName: user?.name,
-    address: user?.address,
-    clientPhoneNo: user?.phone,
-  };
-  const transactionId = `TXN-${uuidv4()}`;
-
-  // Create payment info object
-  const paymentInfo = {
-    transactionId,
-    clientEmail: paymentData.clientEmail,
-    bikeId: paymentData?.bikeId,
-    bikeName: paymentData?.bikeName,
-    totalCost: paymentData.totalCost,
-    startTime: paymentData?.startTime,
-    returnTime: paymentData?.returnTime,
-    ...userInfo,
-  };
-  const paymentSession = await initiatePayment(paymentInfo);
-  return paymentSession;
 };
 
 export const paymentServices = {
   confirmationServiceIntoDB,
   createPaymentIntoDb,
   getAllPayment,
-  testPaymentIntoDb,
 };

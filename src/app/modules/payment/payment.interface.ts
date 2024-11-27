@@ -9,7 +9,6 @@ export type TPaymentProps = {
   totalCost: number;
   startTime: string;
   returnTime: string;
-
   _id?: string;
 };
 
@@ -17,4 +16,5 @@ export type TPaymentInfo = {
   transactionId: string;
   clientEmail: string;
   bikeId: string;
+  amount: string;
 };

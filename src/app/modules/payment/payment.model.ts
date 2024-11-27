@@ -12,6 +12,9 @@ const paymentSchema = new Schema<TPaymentInfo>(
       type: String,
       required: true,
     },
+    amount: {
+      type: String,
+    },
     bikeId: {
       type: String,
       required: true,
