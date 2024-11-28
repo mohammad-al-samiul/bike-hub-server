@@ -11,7 +11,11 @@ const app: Application = express();
 app.use(express.json());
 app.use(
   cors({
-    origin: ["http://localhost:5173", "https://bikehub-client.netlify.app"],
+    origin: [
+      "http://localhost:5173",
+      "https://bikehub-client.netlify.app",
+      "https://bikehub-client.vercel.app",
+    ],
     credentials: true,
   })
 );

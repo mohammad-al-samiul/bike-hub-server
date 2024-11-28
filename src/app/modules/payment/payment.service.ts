@@ -107,7 +107,6 @@ const confirmationServiceIntoDB = async (
           <div class="message-box _success">
             <i class="fa fa-check-circle" aria-hidden="true"></i>
             <h2>Your payment was successful</h2>
-            <a href="/">Home</a>
             <p>
               Thank you for your payment. we will <br />
               be in contact with more details shortly
