@@ -3,6 +3,13 @@ import sendResponse from "../../utils/sendResponse";
 import catchAsync from "../../utils/catchAsync";
 import { BikeServices } from "./bike.service";
 
+interface QueryParams {
+  search?: string;
+  category?: string;
+  page?: string;
+  limit?: string;
+}
+
 const createBike = catchAsync(async (req, res) => {
   const bikeInfo = req.body;
 
@@ -17,7 +24,14 @@ const createBike = catchAsync(async (req, res) => {
 });
 
 const getAllBike = catchAsync(async (req, res) => {
-  const result = await BikeServices.getAllBikeFromDB();
+  const { search, category, page, limit } = req.query as QueryParams;
+
+  const result = await BikeServices.getAllBikeFromDB({
+    search: search as string,
+    category: category as string,
+    page: page as string,
+    limit: limit as string,
+  });
 
   sendResponse(res, {
     success: true,

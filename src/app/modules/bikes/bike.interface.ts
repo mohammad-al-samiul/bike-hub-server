@@ -9,3 +9,9 @@ export type TBike = {
   model: string;
   brand: string;
 };
+export type BikeFilterParams = {
+  search?: string;
+  category?: string;
+  page?: number;
+  limit?: number;
+};

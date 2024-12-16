@@ -11,10 +11,36 @@ const createBikeIntoDB = async (file: any, payload: TBike) => {
   return result;
 };
 
-const getAllBikeFromDB = async () => {
-  const result = await Bike.find().select("-createdAt -updatedAt -__v");
-  return result;
+const getAllBikeFromDB = async (queryParams: any) => {
+  const { search, category, page = 1, limit = 10 } = queryParams;
+
+  const query: any = {};
+
+  if (search) {
+    query.$or = [
+      { name: { $regex: search, $options: "i" } },
+      { brand: { $regex: search, $options: "i" } },
+    ];
+  }
+
+  if (category) {
+    query.brand = category;
+  }
+
+  const skip = (parseInt(page as string) - 1) * parseInt(limit as string);
+  const bikes = await Bike.find(query)
+    .select("-createdAt -updatedAt -__v")
+    .skip(skip)
+    .limit(parseInt(limit as string));
+
+  const totalCount = await Bike.countDocuments(query);
+
+  return {
+    docs: bikes,
+    totalDocs: totalCount,
+  };
 };
+
 const getSingleBikeFromDB = async (id: string) => {
   const result = await Bike.findOne({ _id: id }).select(
     "-createdAt -updatedAt -__v"
