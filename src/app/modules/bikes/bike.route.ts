@@ -21,6 +21,7 @@ bikeRouter.post(
 );
 
 bikeRouter.get("/", BikeController.getAllBike);
+bikeRouter.get("/bike-listing", BikeController.getBikeWithPagination);
 bikeRouter.get("/:id", BikeController.getSingleBike);
 
 bikeRouter.put(

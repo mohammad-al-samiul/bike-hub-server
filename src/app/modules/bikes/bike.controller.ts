@@ -23,15 +23,25 @@ const createBike = catchAsync(async (req, res) => {
   });
 });
 
-const getAllBike = catchAsync(async (req, res) => {
+const getBikeWithPagination = catchAsync(async (req, res) => {
   const { search, category, page, limit } = req.query as QueryParams;
 
-  const result = await BikeServices.getAllBikeFromDB({
+  const result = await BikeServices.getBikeWithPagination({
     search: search as string,
     category: category as string,
     page: page as string,
     limit: limit as string,
   });
+
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: "Bikes retrieved successfully",
+    data: result,
+  });
+});
+const getAllBike = catchAsync(async (req, res) => {
+  const result = await BikeServices.getAllBikeFromDB();
 
   sendResponse(res, {
     success: true,
@@ -83,4 +93,5 @@ export const BikeController = {
   getSingleBike,
   updateBike,
   deleteBike,
+  getBikeWithPagination,
 };

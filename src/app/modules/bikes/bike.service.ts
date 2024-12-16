@@ -11,8 +11,13 @@ const createBikeIntoDB = async (file: any, payload: TBike) => {
   return result;
 };
 
-const getAllBikeFromDB = async (queryParams: any) => {
-  const { search, category, page = 1, limit = 10 } = queryParams;
+const getAllBikeFromDB = async () => {
+  const result = await Bike.find();
+  return result;
+};
+
+const getBikeWithPagination = async (queryParams: any) => {
+  const { search, category, page, limit } = queryParams;
 
   const query: any = {};
 
@@ -73,6 +78,7 @@ const deleteBikeFromDB = async (id: string) => {
 export const BikeServices = {
   createBikeIntoDB,
   getAllBikeFromDB,
+  getBikeWithPagination,
   getSingleBikeFromDB,
   updateBikeFromDB,
   deleteBikeFromDB,
